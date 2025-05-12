@@ -40,3 +40,5 @@ NOTE: You can use ([db.service.ts](./src/services/db.service.ts)) to handle SQL 
 
 \
 Happy coding!
+
+[API Documentation](/documentation/api.md)
