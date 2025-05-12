@@ -1,5 +1,9 @@
 # API Documentation
 
+### Authentication
+
+All routes require the token 'Password123' to be passed as the Authorization Header field
+
 ### Project Routes
 
 `GET /project`
