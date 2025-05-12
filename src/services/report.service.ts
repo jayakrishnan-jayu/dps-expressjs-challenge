@@ -18,18 +18,18 @@ export function byID(req: Request, res: Response) {
 }
 
 export function create(req: Request, res: Response) {
-	const { text, projectID } = req.body;
+	const { text, projectid } = req.body;
 	if (
 		text === undefined ||
 		text.toString() === '' ||
-		projectID === undefined ||
-		isNaN(Number(projectID))
+		projectid === undefined ||
+		isNaN(Number(projectid))
 	) {
 		return res
 			.status(400)
-			.json({ error: "'text' and 'projectID' must be provided" });
+			.json({ error: "'text' and 'projectid' must be provided" });
 	}
-	const result = reportRepo.create(text.toString(), Number(projectID));
+	const result = reportRepo.create(text.toString(), Number(projectid));
 	if (result.error != '') {
 		return res.status(400).json({ error: result.error });
 	}
@@ -75,4 +75,13 @@ export function remove(req: Request, res: Response) {
 		return res.status(400).json({ error: result.error });
 	}
 	return res.json({ success: result.success });
+}
+
+export function specialReport(req: Request, res: Response) {
+	const { word } = req.body;
+	if (word === undefined || word.toString() === '') {
+		return res.status(400).json({ error: "'word' must be provided" });
+	}
+
+	return res.json(reportRepo.specialReport(word));
 }

@@ -83,3 +83,12 @@ export function remove(ID: number) {
 		error: '',
 	};
 }
+
+export function specialReport(word: string) {
+	return db.query(
+		"select id, text, projectid from reports where (length(text) - length(replace(lower(text), @word, '' ))) / length(@word) >= 3;",
+		{
+			word: word,
+		},
+	);
+}
