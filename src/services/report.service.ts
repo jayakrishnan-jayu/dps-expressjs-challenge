@@ -1,4 +1,4 @@
-import { reportRepo } from '../repository';
+import { projectRepo, reportRepo } from '../repository';
 import { Request, Response } from 'express';
 
 export function getAll(req: Request, res: Response) {
@@ -38,21 +38,25 @@ export function create(req: Request, res: Response) {
 
 export function update(req: Request, res: Response) {
 	const { id } = req.params;
-	const { text, projectID } = req.body;
+	const { text, projectid } = req.body;
 	if (isNaN(Number(id))) {
 		return res.status(400).json({ error: 'Invalid project ID' });
 	}
 	if (
 		text === undefined ||
 		text.toString() === '' ||
-		projectID === undefined ||
-		isNaN(Number(projectID))
+		projectid === undefined ||
+		isNaN(Number(projectid))
 	) {
 		return res
 			.status(400)
-			.json({ error: "'text' and 'projectID' must be provided" });
+			.json({ error: "'text' and 'projectid' must be provided" });
 	}
-	const result = reportRepo.update(Number(id), text, Number(projectID));
+	const project = projectRepo.findByID(projectid);
+	if (project.error != '') {
+		return res.status(400).json({ error: project.error });
+	}
+	const result = reportRepo.update(Number(id), text, Number(projectid));
 	if (result.error != '') {
 		return res.status(400).json({ error: result.error });
 	}
