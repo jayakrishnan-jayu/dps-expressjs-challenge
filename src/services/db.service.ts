@@ -19,4 +19,9 @@ function run(
 	return params ? db.prepare(sql).run(params) : db.prepare(sql).run();
 }
 
-export default { query, run };
+function transaction(callback: () => void) {
+	const tx = db.transaction(callback);
+	return tx;
+}
+
+export default { query, run, transaction };

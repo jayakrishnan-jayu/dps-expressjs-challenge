@@ -69,18 +69,34 @@ export function update(ID: number, name: string, description: string) {
 }
 
 export function remove(ID: number) {
-	const result = db.run('DELETE FROM projects WHERE id = @id', {
-		id: ID.toString(),
+	let result = 0;
+
+	const tx = db.transaction(() => {
+		db.run('DELETE FROM reports WHERE projectid = @id', { id: ID });
+		result = db.run('DELETE FROM projects WHERE id = @id', {
+			id: ID,
+		}).changes;
 	});
 
-	if (result.changes == 0) {
+	try {
+		tx();
+		if (result === 0) {
+			return {
+				success: false,
+				error: 'Error deleting project',
+			};
+		}
+
+		return {
+			success: true,
+			error: '',
+		};
+	} catch (err) {
 		return {
 			success: false,
-			error: 'Error deleting project',
+			error:
+				'Transaction failed: ' +
+				(err instanceof Error ? err.message : String(err)),
 		};
 	}
-	return {
-		success: true,
-		error: '',
-	};
 }

@@ -21,7 +21,6 @@ export function findByID(ID: number) {
 }
 
 export function create(text: string, projectID: number) {
-	// should  use transaction here
 	const project = db.query('SELECT id FROM projects WHERE id = @id', {
 		id: projectID.toString(),
 	});
