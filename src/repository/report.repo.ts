@@ -49,7 +49,7 @@ export function create(text: string, projectID: number) {
 	};
 }
 
-export function update(ID: number, text: string, projectID: string) {
+export function update(ID: number, text: string, projectID: number) {
 	const result = db.run(
 		'UPDATE reports SET text = @text, projectid = @projectid WHERE id = @id',
 		{ id: ID.toString(), text: text, projectid: projectID.toString() },
