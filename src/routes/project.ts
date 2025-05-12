@@ -1,25 +1,14 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
+import { projectSvc } from '../services';
 
 const router = express.Router();
 
-router.get('/', (req: Request, res: Response) => {
-	res.send('all projects');
-});
+router.route('/').get(projectSvc.getAll).post(projectSvc.create);
 
-router.get('/:id', (req: Request, res: Response) => {
-	res.send(`project with id ${req.params['id']}`);
-});
-
-router.post('/', (req: Request, res: Response) => {
-	res.send('create project');
-});
-
-router.patch('/:id', (req: Request, res: Response) => {
-	res.send(`update project with id ${req.params['id']}`);
-});
-
-router.delete('/:id', (req: Request, res: Response) => {
-	res.send(`delete project with id ${req.params['id']}`);
-});
+router
+	.route('/:id')
+	.get(projectSvc.byID)
+	.put(projectSvc.update)
+	.delete(projectSvc.remove);
 
 export default router;
